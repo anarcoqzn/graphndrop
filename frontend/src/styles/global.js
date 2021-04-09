@@ -12,7 +12,7 @@ export default createGlobalStyle `
     font-size: 14px;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
-    background-color: aliceblue;
+    background-color: darkslateblue;
   }
   html, body, #root {
     height: 100%;
