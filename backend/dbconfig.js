@@ -23,9 +23,6 @@ module.exports = {
   config: {
     user: process.env.USER,
     password: process.env.PASSWORD,
-    connectString: process.env.DATABASE,
-    poolMax: 5,
-    poolMin: 5,
-    poolIncrement: 0
+    connectString: process.env.DATABASE
   }
 }
