@@ -8,7 +8,7 @@ module.exports = {
       connection = connection = await oracledb.getConnection(dbconfig.config);
 
       const response = await connection.execute(
-        'SELECT DISTINCT REFERENCED_TYPE FROM DBA_DEPENDENCIES ORDER BY REFERENCED_TYPE'
+        `select owner, table_name from dba_objects where owner='ADMIN'`
       )
       return res.json(response);
     } catch (error) {
