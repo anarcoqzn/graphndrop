@@ -1,9 +1,10 @@
 const router = require('express').Router();
-const getInfo = require('./src/getTableInfo/getInfo');
+const dbconfig = require('./dbconfig');
+const infoTables = require('./src/getInfo/tables');
+const infoUser = require('./src/getInfo/userInfo');
 
-router.get('/', (req, res) => {
-  return res.send("Hello World")
-});
-router.get('/getInfo', getInfo.getUserDependencies);
+router.get('/checkConn',dbconfig.checkConnection);
+
+router.get('/getInfo', infoTables.getUserDependencies);
 
 module.exports = router;
