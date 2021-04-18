@@ -1,6 +1,7 @@
 require('dotenv').config();
 const oracledb = require('oracledb');
 const express = require('express');
+const cors = require('cors');
 const dbconfig = require('./dbconfig');
 const app = express();
 const router = require('./router');
@@ -9,6 +10,7 @@ const router = require('./router');
 // dbconfig.checkConnection() // - uncomment for initial testing connection
 
 app.use(express.json());
+app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use('/api', router);
 app.listen(process.env.PORT, console.log(
