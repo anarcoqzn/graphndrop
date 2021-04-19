@@ -1,38 +1,45 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Graph } from 'react-d3-graph';
 import { useDispatch, useSelector } from 'react-redux';
-import { getDependencies } from '../../services/actions/tableActions';
+import { getDependencies, getTables } from '../../services/actions/tableActions';
 
 export default function Home() {
 
   const dispatch = useDispatch();
   const tbDependencies = useSelector(state => state.tableDependencies);
-  const { loading, tableDependencies, error} = tbDependencies
+  const { loading: loadingDep, tableDependencies, error: errorDep } = tbDependencies
+  const tbInfo = useSelector(state => state.tablesInfo);
+  const { loading: loadingInfo, tablesInfo, error: errorInfo } = tbInfo;
 
-  const data = {
-    nodes: [{ id: "Harry" }, { id: "Sally" }, { id: "Alice" }, {id: "John"}],
-    links: [
-      { source: "Harry", target: "Sally" },
-      { source: "Harry", target: "Alice" },
-      { source: "Sally", target: "John" },
-      { source: "John", target: "Alice" },
-      { source: "Alice", target: "Sally" },
-      { source: "Harry", target: "John"}
-    ],
-  };
+  const [data, setData] = useState({nodes:[],links:[]});
   
   // the graph configuration, just override the ones you need
   const myConfig = {
     nodeHighlightBehavior: true,
+    height: window.outerHeight,
+    width: window.outerWidth,
+    directed: true,
+    linkHighlightBehavior : true,
     node: {
-      color: "darkorange",
+      color: "#909090",
       size: 1000,
-      highlightStrokeColor: "blue",
+      highlightStrokeColor: "darkblue",
       symbolType: "square",
-      fontSize: 14
+      fontSize: 14,
+      highlightFontSize: 14,
+      highlightFontWeight: 'bold',
+      labelPosition: 'top',
     },
     link: {
       highlightColor: "lightblue",
+      strokeWidth: 4,
+      renderLabel: true,
+      fontSize:15,
+      highlightFontSize: 15,
+      strokeLinecap: 'square'
+    },
+    d3: {
+      gravity: -100 * data.nodes.length % window.innerWidth,
     },
   };
   const onClickNode = function(nodeId) {
@@ -44,16 +51,36 @@ export default function Home() {
   };
 
   useEffect(() => {
-    dispatch(getDependencies());
+    dispatch(getTables()).then(async () => {
+      await dispatch(getDependencies())});
   }, [dispatch]);
 
   useEffect(() => {
-    console.log(tableDependencies);
-  }, [tableDependencies])
+    if (tablesInfo && tableDependencies && tablesInfo.length > 0 && tableDependencies.length > 0) {
+      setData({ nodes: [], links: [] });
+      setData({
+        nodes: tablesInfo.map(table => {
+          return {
+            'id': table.name
+          }
+        }),
+        links: tableDependencies.map(dep => {
+          return {
+            'source': dep.from.table,
+            'target': dep.to.table,
+            'labelProperty':dep.constraint_name
+          }
+        })
+      });
+    }
+  }, [tablesInfo, tableDependencies]);
 
   return (
-    loading ? <div>LOADING ... </div> :
-    error ? <div>{error}</div>:
+    console.log(data) && 
+    loadingInfo ? <div>LOADING DATABASE INFO ...</div> :
+    loadingDep ? <div>LOADING DEPENDENCIES ... </div> :
+    errorDep ? <div>ERROR AT LOADING DEPENDENCIES</div> :
+    errorInfo ? <div>ERROR AT LOADING DATABASE INFO</div> :     
     <Graph
       id="graph-id" // id is mandatory
       data={data}
