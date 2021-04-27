@@ -106,5 +106,49 @@ module.exports = {
         return res.status(500).send(error);
       }
     }
+  },
+  async getUserDependencies(req, res) {
+    let connection;
+    let response = [];
+    try {
+      connection = await oracledb.getConnection(dbconfig.config);
+      const {metaData, rows} = await connection.execute(
+        `select * from user_dependencies`
+      );
+
+      const name = metaData.findIndex(obj => (obj.name === "NAME"));
+      const type = metaData.findIndex(obj => (obj.name === "TYPE"));
+      const refOwner = metaData.findIndex(obj => (obj.name === "REFERENCED_OWNER"));
+      const refName = metaData.findIndex(obj => (obj.name === "REFERENCED_NAME"));
+      const refType = metaData.findIndex(obj => (obj.name === "REFERENCED_TYPE"));
+      const refLinkName = metaData.findIndex(obj => (obj.name === "REFERENCED_LINK_NAME"));
+      const schemaID = metaData.findIndex(obj => (obj.name === "SCHEMAID"));
+      const depType = metaData.findIndex(obj => (obj.name === "DEPENDENCY_TYPE"));
+
+      rows.forEach(dep => {
+        response.push({
+          name: dep[name],
+          type: dep[type],
+          refOwner: dep[refOwner],
+          refName: dep[refName],
+          refType: dep[refType],
+          refLinkName: dep[refLinkName],
+          schemaID: dep[schemaID],
+          depType: dep[depType]
+        });
+      });
+
+      return res.send(response);
+    } catch (error) {
+      return res.status(500).send(error);
+    } finally {
+      if (connection) {
+        try {
+          await connection.close();
+        } catch (error) {
+          console.log(error);
+        }
+      } 
+    }
   }
 }

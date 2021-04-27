@@ -7,5 +7,6 @@ router.post('/newConnection', dbconfig.newConnection);
 
 router.get('/tables/dependencies', infoTables.getTableDependencies);
 router.get('/tables', infoTables.getTables)
+router.get('/userDependencies', infoTables.getUserDependencies);
 
 module.exports = router;
