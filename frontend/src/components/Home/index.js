@@ -76,11 +76,10 @@ export default function Home() {
   }, [tablesInfo, tableDependencies]);
 
   return (
-    console.log(data) && 
     loadingInfo ? <div>LOADING DATABASE INFO ...</div> :
     loadingDep ? <div>LOADING DEPENDENCIES ... </div> :
-    errorDep ? <div>ERROR AT LOADING DEPENDENCIES</div> :
-    errorInfo ? <div>ERROR AT LOADING DATABASE INFO</div> :     
+        errorDep ? <div>ERROR AT LOADING DEPENDENCIES: ERROR: {errorDep.data.errorNum} STATUS: {errorDep.status}</div> :
+    errorInfo ? <div>ERROR AT LOADING DATABASE INFO: ERROR: {errorInfo.data.errorNum} STATUS: {errorInfo.status}</div> :
     <Graph
       id="graph-id" // id is mandatory
       data={data}

@@ -4,6 +4,7 @@ import GlobalStyle from './styles/global';
 import Home from "./components/Home";
 import InitialPage from './components/InitialPage';
 import Login from './components/Login';
+import ConnectBD from './components/ConnectBD';
 
 function App() {
   return (
@@ -13,7 +14,8 @@ function App() {
         <Switch>
           <Route exact path='/' component={InitialPage}/>
           <Route path='/login' component={Login} />
-          <Route path='/home' component={Home}/>
+          <Route path='/home' component={Home} />
+          <Route path='/connect' component={ConnectBD}/>
         </Switch>
       </BrowserRouter>
     </div>

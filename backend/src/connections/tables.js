@@ -3,6 +3,7 @@ const dbconfig = require('../../dbconfig');
 
 module.exports = {
   async getTableDependencies(_, res) {
+
     let connection;
     try {
       const tablesDependencies = [];
@@ -43,12 +44,12 @@ module.exports = {
       });
       return res.json(tablesDependencies);
     } catch (error) {
-      return res.send(error);
+      return res.status(500).send(error);
     } finally {
       try {
         if (connection) await connection.close();
       } catch (error) {
-        return res.send(error);
+        return res.status(500).send(error);
       }
     }
   },
@@ -97,12 +98,12 @@ module.exports = {
 
       return res.json(tablesInfo);
     } catch (error) {
-      return res.send(error);
+      return res.status(500).send(error);
     } finally {
       try {
         if (connection) await connection.close();
       } catch (error) {
-        return res.send(error);
+        return res.status(500).send(error);
       }
     }
   }
