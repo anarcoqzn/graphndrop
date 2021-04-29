@@ -1,0 +1,7 @@
+const objectConstants = {
+  OBJECT_LIST_REQUEST: "OBJECT_LIST_REQUEST",
+  OBJECT_LIST_SUCCESS: "OBJECT_LIST_SUCCESS",
+  OBJECT_LIST_FAIL: "OBJECT_LIST_FAIL"
+}
+
+export default objectConstants;
