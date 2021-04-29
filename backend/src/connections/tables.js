@@ -125,8 +125,8 @@ module.exports = {
       const schemaID = metaData.findIndex(obj => (obj.name === "SCHEMAID"));
       const depType = metaData.findIndex(obj => (obj.name === "DEPENDENCY_TYPE"));
 
-      rows.forEach(dep => {
-        response.push({
+      response = rows.map(dep => {
+        return{
           name: dep[name],
           type: dep[type],
           refOwner: dep[refOwner],
@@ -135,7 +135,7 @@ module.exports = {
           refLinkName: dep[refLinkName],
           schemaID: dep[schemaID],
           depType: dep[depType]
-        });
+        }
       });
 
       return res.send(response);
