@@ -10,14 +10,20 @@ export const Container = styled.div`
   text-align: center;
   ul {
     list-style: none;
-    li{
-      padding: 10px;
-      font-weight: bold;
-      cursor: pointer;
+  }
 
-      :hover{
-          border: 1px solid black;
-      }
+  li{
+    padding: 10px;
+    font-weight: bold;
+    cursor: pointer;
+
+    :hover{
+      color: #FFF;
     }
+  }
+
+  #new-conn{
+    width: 100%;
+    border-radius:0px;
   }
 `;
