@@ -18,15 +18,18 @@ export const SidebarContainer = styled.div`
     display: grid;
     background-color: whitesmoke;
     padding: 10px;
-    li {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid white;
-        cursor: pointer;
-        transition: .3s;
-        :hover {
-            background-color: white;
-            border: 1px solid black;
-        }
+`;
+
+export const SideBarListItem = styled.li`
+    width: 100%;
+    padding: 10px;
+    border: 1px solid white;
+    cursor: pointer;
+    transition: .3s;
+    :hover{
+        background-color: white;
+        border: 1px solid black;
     }
+
+    ${props=> props.selected ? "background-color: white;border: 1px solid black;" : null}
 `;

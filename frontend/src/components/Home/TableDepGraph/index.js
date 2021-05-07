@@ -3,7 +3,7 @@ import { Graph } from 'react-d3-graph';
 import { useDispatch, useSelector } from 'react-redux';
 import { getDependencies, getTables } from '../../../services/actions/tableActions';
 
-export default function DepGraph(props) {
+export default function TableDepGraph(props) {
     const dispatch = useDispatch();
     const tbDependencies = useSelector(state => state.tableDependencies);
     const { loading: loadingDep, tableDependencies, error: errorDep } = tbDependencies
