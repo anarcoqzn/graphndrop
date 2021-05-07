@@ -5,7 +5,7 @@ import Cookie from 'js-cookie';
 const newConnection = (data) => async (dispatch) => {
   try {
     dispatch({ type: userConstants.NEW_CONNECTION_REQUEST, payload: data });
-    const response = await api.post('/newConnection', data);
+    const response = await api.post('/connections', data);
     dispatch({ type: userConstants.NEW_CONNECTION_SUCCESS, payload: response.data });
   }catch (error) {
     dispatch({ type: userConstants.NEW_CONNECTION_FAIL, payload: error.response });

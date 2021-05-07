@@ -28,7 +28,7 @@ export default function InitialPage(props) {
               {
                 connections.map((conn,i) => {
                   return <li key={i} style={i%2===0?{backgroundColor:"#A9A9A9"}:{backgroundColor:"#DCDCDC"}} onClick={()=>handleConnClick(conn)}>
-                    {conn.connectString}
+                    {conn.dbName}
                   </li>
                 })
               }              

@@ -8,11 +8,12 @@ export const Button = styled.button`
   padding: 0.25em 1em;
   border: 1px solid ${props => props.color};
   border-radius: 5px;
-  background: transparent;
+  background-color: #FFF;
+  color: black;
   cursor: pointer;
+  transition: .3s;
   :hover {
-    background: ${props => props.color};
-    color:white;
-    transition: .3s;
+    background-color: ${props => props.color};
+    color: white;
   }
 `;

@@ -12,7 +12,6 @@ export const NewConnection = styled.div`
   background-color: linen;
   height: fit-content;
   padding: 5px;
-  margin-top: 50px;
 
   .inputs {
     display: grid;
@@ -28,17 +27,26 @@ export const NewConnection = styled.div`
     margin-top: 10px;
     margin-bottom: 10px;
   }
+`;
 
-  .instructions{
+export const InstructionsContainer = styled.div`
+  display: grid;
+  h1{
+    font-size: 20px;
+    cursor: pointer;
+  }
+  p{
     padding: 5px;
-    display: grid;
+  }
+`;
 
-    h1{
-      font-size: 20px;
-    }
-    p{
-      padding: 5px;
-    }
+export const InstructionsContent = styled.div`
+  padding: 5px;
+  display: grid;
+  overflow: hidden;
+  max-height:${props =>props.maxHeight};  
+  
+  
     pre{
       display: block;
       padding: 12.5px;
@@ -53,5 +61,4 @@ export const NewConnection = styled.div`
       border-radius: 4px;
       overflow-x:auto;
     }
-  }
 `;

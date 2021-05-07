@@ -3,10 +3,10 @@ import Header from './Header';
 import {Container, SidebarContainer, GraphContainer}  from './styles';
 import DepGraph from './DepGraph';
 
-export default function Home() {
+export default function Home(props) {
   return (
     <div>
-      <Header />
+      <Header props={props}/>
       <Container>
         <SidebarContainer>
           <ul>

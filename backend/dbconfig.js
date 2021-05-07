@@ -3,7 +3,8 @@ const oracledb = require('oracledb');
 const config = {
   user: undefined,
   password: undefined,
-  connectString: undefined
+  connectString: undefined,
+  dbName:  undefined
 }
 
 const connections = [];
@@ -32,15 +33,18 @@ module.exports = {
   },
   config: config,
   async newConnection(req, res) {
-    const { dbName, dbUser, dbUserPassword, walletPath } = req.body;
+    const { dbName, dbUser, dbUserPassword, connectString } = req.body;
     const conn = {
       id: connections.length === 0 ? 0 : connections[connections.length - 1].id + 1,
       user: dbUser,
       password: dbUserPassword,
-      connectString: dbName
+      connectString: connectString,
+      dbName: dbName
     }
     
-    if (!connections.find(obj => obj.user === conn.user && obj.connectString === conn.connectString)) await connections.push(conn);
+    if (!connections.find(obj => obj.user === conn.user && obj.connectString === conn.connectString)) {
+      await connections.push(conn);
+    };
     
     return res.send(connections);
   },
@@ -58,6 +62,7 @@ module.exports = {
     config.user = conn.user;
     config.connectString = conn.connectString;
     config.password = conn.password;
+    config.dbName = conn.dbName;
 
     return res.send(config);
   },
