@@ -38,7 +38,7 @@ module.exports = {
       id: connections.length === 0 ? 0 : connections[connections.length - 1].id + 1,
       user: dbUser,
       password: dbUserPassword,
-      connectString: connectString,
+      connectString: connectString || dbName,
       dbName: dbName
     }
     

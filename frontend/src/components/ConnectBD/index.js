@@ -17,7 +17,7 @@ export default function ConnectBD(props) {
   
 
   const btnDisabled = dbName.trim().length === 0 || dbUser.trim().length === 0 ||
-                       dbUserPassword.trim().length === 0 || connectString.trim().length === 0;
+                      dbUserPassword.trim().length === 0; //|| connectString.trim().length === 0;
 
   const dispatch = useDispatch();
 
@@ -76,10 +76,11 @@ export default function ConnectBD(props) {
       <h1>Create a new connection</h1>
 
       <div className="inputs">
-        <Input id='db-name' type='text' value={dbName} onChange={handleDBName} placeholder='DATABASE NAME' />
+        <Input id='db-name' type='text' value={dbName} onChange={handleDBName} placeholder='Connect String Variable (Ex: my_db_high)' />
         <Input id='db-user' type='text' value={dbUser} onChange={handleDBUser} placeholder='USER' />
         <Input id='db-user-password' type='password' value={dbUserPassword} onChange={handleDBUserPassword} placeholder='PASSWORD' />
-        <Input id="instant-client-path" type="text" value={connectString} onChange={handleConnectString} placeholder="Connect String" />
+        {/* Check this in the future: It may be possible to connect using only a connectString directly */}
+        {/* <Input id="instant-client-path" type="text" value={connectString} onChange={handleConnectString} placeholder="Connect String" /> */}
 
         <Button disabled={ btnDisabled } color="darkorange" onClick={submitConn}>CONNECT</Button>
       </div>
