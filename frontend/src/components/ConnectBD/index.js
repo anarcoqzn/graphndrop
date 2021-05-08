@@ -23,7 +23,7 @@ export default function ConnectBD(props) {
 
   const handleDBName = (input) => {
     const data = input.target.value;
-    if (data !== '' && data.length > 0) {
+    if (data !== '' && data.trim().length > 0) {
       setDBName(data);
     }
   }

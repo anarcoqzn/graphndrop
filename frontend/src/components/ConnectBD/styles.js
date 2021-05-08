@@ -44,8 +44,8 @@ export const InstructionsContent = styled.div`
   padding: 5px;
   display: grid;
   overflow: hidden;
-  max-height:${props =>props.maxHeight};  
-  
+  transition: 0.2s max-height;  
+  max-height: ${props => props.maxHeight ? props.maxHeight : 0};
   
     pre{
       display: block;

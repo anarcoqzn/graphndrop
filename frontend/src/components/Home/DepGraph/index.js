@@ -9,8 +9,12 @@ export default function DepGraph(props) {
   const dispatch = useDispatch();
   const tbDependencies = useSelector(state => state.tableDependencies);
   const { loading: loadingDep, tableDependencies, error: errorDep } = tbDependencies
-  const { objectsList } = useSelector(state => state.objectsList);
-  const { userDependencies } = useSelector(state => state.userDependencies);
+  
+  const objList = useSelector(state => state.objectsList);
+  const { loading: loadingObjList, objectsList, error: errorObjList } = objList;
+  
+  const userDep = useSelector(state => state.userDependencies);
+  const { loading: loadingUserDep, userDependencies, error: errorUserDep } = userDep;
 
   const [data, setData] = useState({nodes:[],links:[]});
   
@@ -132,8 +136,11 @@ export default function DepGraph(props) {
   }, [objectsList, tableDependencies, props]);
 
   return (
-    console.log(data) &&
+    loadingObjList ? <div>LOADING OBJECTS LIST ...</div> :
+    loadingUserDep ? <div>LOADING USER DEPENDENCIES OBJECTS ...</div> :  
     loadingDep ? <div>LOADING DEPENDENCIES ... </div> :
+    errorObjList ? <div>ERROR AT LOADING OBJECTS LIST: ERROR {errorObjList.data.errorNum} STATUS: { errorObjList.status}</div> :
+    errorUserDep ? <div>RROR AT LOADING USER DEPENDENCIES: ERROR {errorUserDep.data.errorNum} STATUS:{errorUserDep.status}</div> :
     errorDep ? <div>ERROR AT LOADING DEPENDENCIES: ERROR: {errorDep.data.errorNum} STATUS: {errorDep.status}</div> :
     <Graph
       id="graph-id" // id is mandatory
