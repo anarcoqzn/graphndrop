@@ -5,7 +5,7 @@ const objects = require('./src/connections/objects');
 
 router.get('/checkConn',dbconfig.checkConnection);
 router.post('/connections', dbconfig.newConnection);
-router.delete('/connections', dbconfig.removeConnection);
+router.delete('/connections/:id', dbconfig.removeConnection);
 router.get('/connections/:id?', dbconfig.getConnections);
 router.patch('/connections', dbconfig.setConnection);
 router.put('/connections/:id', dbconfig.updateConnection);

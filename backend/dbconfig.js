@@ -49,8 +49,8 @@ module.exports = {
     return res.send(connections);
   },
   removeConnection(req, res){
-    const { id } = req.body;
-    const index = connections.findIndex(obj => (obj.id === id));
+    const { id } = req.params ;
+    const index = connections.findIndex(obj => (String(obj.id) === id));
     if ( index !== -1 ) connections.splice(index, 1);
     return res.send(connections);
   },

@@ -2,12 +2,11 @@ import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import Cookie from 'js-cookie';
 import { tableDependenciesReducer, tablesInfoReducer } from './reducers/tableReducers';
-import { getConnectionsReducer, newConnectionReducer } from './reducers/userReducer';
+import { getConnectionsReducer, newConnectionReducer, setConnectionReducer } from './reducers/userReducer';
 import { objectListReducer, userDependenciesReducer } from './reducers/objectReducers';
 
-const userInfo = Cookie.getJSON("userInfo") || null;
-const connections = Cookie.getJSON("connections") || [];
-const initialState = { dataBases: { connections }, userLogin: { userInfo } };
+const selectedConn = Cookie.getJSON("selectedConn") || {};
+const initialState = { selectedConnection: { selectedConn } };
 
 const reducer = combineReducers({
   tableDependencies: tableDependenciesReducer,
@@ -15,7 +14,8 @@ const reducer = combineReducers({
   newConnection: newConnectionReducer,
   objectsList: objectListReducer,
   dataBases: getConnectionsReducer,
-  userDependencies: userDependenciesReducer
+  userDependencies: userDependenciesReducer,
+  selectedConnection: setConnectionReducer
 });
 
 const conposeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

@@ -29,4 +29,20 @@ function getConnectionsReducer(state = { connections: [] }, action) {
   }
 }
 
-export { newConnectionReducer, getConnectionsReducer };
+function setConnectionReducer(state = { selectedConnection: [] }, action) {
+  switch (action.type) {
+    case userConstants.SET_CONNECTION_REQUEST:
+      return { loading: true };
+    
+    case userConstants.SET_CONNECTION_SUCCESS:
+      return { loading: false, selectedConnection: action.payload };
+    
+    case userConstants.SET_CONNECTION_FAIL:
+      return { loading: false, error: action.payload };
+  
+    default:
+      return state;
+  }
+}
+
+export { newConnectionReducer, getConnectionsReducer, setConnectionReducer };
