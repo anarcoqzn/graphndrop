@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import Header from './Header';
 import {Container, SidebarContainer, GraphContainer, SideBarListItem}  from './styles';
 import DepGraph from './DepGraph';
@@ -19,10 +19,6 @@ export default function Home(props) {
     setTbDepView(false);
     setUsDepView(true);
   };
-
-  useEffect(() => {
-    
-  }, [typeGraph])
 
   return (
     <div>

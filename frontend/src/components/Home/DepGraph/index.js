@@ -89,7 +89,7 @@ export default function DepGraph(props) {
   }, [dispatch,props]);
   
   useEffect(() => {
-    if (objectsList && objectsList.length > 0) {
+    if (props.type && objectsList &&  objectsList.length > 0) {
       setData({ nodes: [], links: [] });
       const tempNodes = [];
 
@@ -134,9 +134,10 @@ export default function DepGraph(props) {
         })
       }
     }
-  }, [objectsList, tableDependencies, props]);
+  }, [objectsList, tableDependencies, userDependencies, props]);
 
   return (
+    !props.type ? null :
     loadingObjList ? <Loading msg={"LOADING OBJECTS LIST ... "}/> :
     loadingUserDep ? <Loading msg={"LOADING USER DEPENDENCIES OBJECTS ..."}/>:  
     loadingDep ? <Loading msg={"LOADING DEPENDENCIES ..."}/>:

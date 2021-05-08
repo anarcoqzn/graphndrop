@@ -11,7 +11,7 @@ export default function ConnectBD(props) {
   const [dbName, setDBName] = useState('');
   const [dbUser, setDBUser] = useState('');
   const [dbUserPassword, setDBUserPassword] = useState('');
-  const [connectString, setConnectString] = useState('');
+  // const [connectString, setConnectString] = useState('');
   const [heightOne, setHeightOne] = useState('0');
   const [heightTwo, setHeightTwo] = useState('0');
   
@@ -42,19 +42,19 @@ export default function ConnectBD(props) {
     }
   }
 
-  const handleConnectString = (input) => {
-    const data = input.target.value;
-    if (data !== '' && data.length > 0) {
-      setConnectString(data);
-    }
-  }
+  // const handleConnectString = (input) => {
+  //   const data = input.target.value;
+  //   if (data !== '' && data.length > 0) {
+  //     setConnectString(data);
+  //   }
+  // }
 
   const submitConn = async () => {
     const data = {
       dbName:dbName,
       dbUser: dbUser,
-      dbUserPassword: dbUserPassword,
-      connectString:connectString
+      dbUserPassword: dbUserPassword
+      // connectString:connectString
     }
 
     await dispatch(newConnection( data ));
