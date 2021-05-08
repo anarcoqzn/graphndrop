@@ -5,7 +5,7 @@ import { tableDependenciesReducer, tablesInfoReducer } from './reducers/tableRed
 import { getConnectionsReducer, newConnectionReducer, setConnectionReducer } from './reducers/userReducer';
 import { objectListReducer, userDependenciesReducer } from './reducers/objectReducers';
 
-const selectedConn = Cookie.getJSON("selectedConn") || {};
+const selectedConn = Cookie.getJSON("selectedConnection") || {};
 const initialState = { selectedConnection: { selectedConn } };
 
 const reducer = combineReducers({

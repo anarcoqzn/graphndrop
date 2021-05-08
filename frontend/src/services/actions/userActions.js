@@ -27,7 +27,7 @@ const setConnection = (connID) => async (dispatch) => {
     dispatch({ type: userConstants.SET_CONNECTION_REQUEST, payload: connID });
     const { data } = await api.patch('/connections', { id: connID });
     dispatch({ type: userConstants.SET_CONNECTION_SUCCESS, payload: data });
-    Cookie.set("selectedConnection", JSON.stringify('data'));
+    Cookie.set("selectedConnection", JSON.stringify(data));
   } catch (error) {
     dispatch({ type: userConstants.SET_CONNECTION_FAIL, payload: error.response });
   }
