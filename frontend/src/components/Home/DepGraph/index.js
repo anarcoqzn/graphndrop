@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getTableDependencies } from '../../../services/actions/tableActions';
 import { getObjectsList, getUserDependencies } from '../../../services/actions/objectActions';
 import graphTypes from '../../../services/constants/graphTypeConstants';
+import { Error, Loading } from '../../Loading&Error';
 
 export default function DepGraph(props) {
   const dispatch = useDispatch();
@@ -136,12 +137,12 @@ export default function DepGraph(props) {
   }, [objectsList, tableDependencies, props]);
 
   return (
-    loadingObjList ? <div>LOADING OBJECTS LIST ...</div> :
-    loadingUserDep ? <div>LOADING USER DEPENDENCIES OBJECTS ...</div> :  
-    loadingDep ? <div>LOADING DEPENDENCIES ... </div> :
-    errorObjList ? <div>ERROR AT LOADING OBJECTS LIST: ERROR {errorObjList.data.errorNum} STATUS: { errorObjList.status}</div> :
-    errorUserDep ? <div>RROR AT LOADING USER DEPENDENCIES: ERROR {errorUserDep.data.errorNum} STATUS:{errorUserDep.status}</div> :
-    errorDep ? <div>ERROR AT LOADING DEPENDENCIES: ERROR: {errorDep.data.errorNum} STATUS: {errorDep.status}</div> :
+    loadingObjList ? <Loading msg={"LOADING OBJECTS LIST ... "}/> :
+    loadingUserDep ? <Loading msg={"LOADING USER DEPENDENCIES OBJECTS ..."}/>:  
+    loadingDep ? <Loading msg={"LOADING DEPENDENCIES ..."}/>:
+    errorObjList ? <Error msg={`ERROR AT LOADING OBJECTS LIST: ERROR ${errorObjList.data.errorNum} STATUS: ${ errorObjList.status}`} /> :
+    errorUserDep ? <Error msg={`ERROR AT LOADING USER DEPENDENCIES: ERROR ${errorUserDep.data.errorNum} STATUS: ${errorUserDep.status}`} />:
+    errorDep ? <Error msg={`ERROR AT LOADING DEPENDENCIES: ERROR: ${errorDep.data.errorNum} STATUS: ${errorDep.status}`}/>:
     <Graph
       id="graph-id" // id is mandatory
       data={data}
