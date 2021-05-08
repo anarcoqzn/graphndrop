@@ -1,20 +1,28 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Header from './Header';
 import {Container, SidebarContainer, GraphContainer, SideBarListItem}  from './styles';
-import TableDepGraph from './TableDepGraph';
+import DepGraph from './DepGraph';
+import graphTypesConstants from '../../services/constants/graphTypeConstants';
 
 export default function Home(props) {
   const [tbDepView, setTbDepView] = useState(false);
   const [usDepView, setUsDepView] = useState(false);
+  const [typeGraph, setTypeGraph] = useState('');
 
   const handleTbDepClick = () => {
+    setTypeGraph(graphTypesConstants.tableDependencies);
     setUsDepView(false);
     setTbDepView(true);
   };
   const handleUsDepClick = () => {
+    setTypeGraph(graphTypesConstants.userDependencies);
     setTbDepView(false);
     setUsDepView(true);
   };
+
+  useEffect(() => {
+    
+  }, [typeGraph])
 
   return (
     <div>
@@ -29,10 +37,7 @@ export default function Home(props) {
         </SidebarContainer>
 
         <GraphContainer>
-          {
-            tbDepView ? <TableDepGraph /> :
-            usDepView ? <h1>UserDependencies</h1> : null
-          }
+          <DepGraph type={typeGraph}/>
         </GraphContainer>
       </Container>
     </div>

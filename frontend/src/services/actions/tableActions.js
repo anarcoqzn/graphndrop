@@ -1,7 +1,7 @@
 import tableConstants from '../constants/tableConstants';
 import api from '../api';
 
-const getDependencies = () => async (dispatch) => {
+const getTableDependencies = () => async (dispatch) => {
   try {
     dispatch({ type: tableConstants.TABLE_DEPENDENCIES_REQUEST });
     const { data } = await api.get('/tables/dependencies');
@@ -20,4 +20,4 @@ const getTables = () => async (dispatch) => {
     dispatch({ type: tableConstants.TABLE_LIST_FAIL, payload: error.response });
   }
 }
-export { getDependencies, getTables };
+export { getTableDependencies, getTables };

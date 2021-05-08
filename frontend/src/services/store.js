@@ -3,7 +3,7 @@ import thunk from 'redux-thunk';
 import Cookie from 'js-cookie';
 import { tableDependenciesReducer, tablesInfoReducer } from './reducers/tableReducers';
 import { getConnectionsReducer, newConnectionReducer } from './reducers/userReducer';
-import { objectListReducer } from './reducers/objectReducers';
+import { objectListReducer, userDependenciesReducer } from './reducers/objectReducers';
 
 const userInfo = Cookie.getJSON("userInfo") || null;
 const connections = Cookie.getJSON("connections") || [];
@@ -14,7 +14,8 @@ const reducer = combineReducers({
   tablesInfo: tablesInfoReducer,
   newConnection: newConnectionReducer,
   objectsList: objectListReducer,
-  dataBases: getConnectionsReducer
+  dataBases: getConnectionsReducer,
+  userDependencies: userDependenciesReducer
 });
 
 const conposeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

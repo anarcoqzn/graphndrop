@@ -13,4 +13,17 @@ function objectListReducer(state = { objectsList: [] }, action) {
   }
 }
 
-export { objectListReducer };
+function userDependenciesReducer(state = { userDependencies: [] }, action) {
+  switch (action.type) {
+    case objectConstants.USER_DEPENDENCIES_REQUEST:
+      return { loading: true };
+    case objectConstants.USER_DEPENDENCIES_SUCCESS:
+      return { loading: false, userDependencies: action.payload };
+    case objectConstants.USER_DEPENDENCIES_FAIL:
+      return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+}
+
+export { objectListReducer, userDependenciesReducer };
