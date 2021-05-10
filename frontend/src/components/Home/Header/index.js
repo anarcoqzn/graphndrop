@@ -7,7 +7,7 @@ function Header({ props }) {
   
   return (
     <Container>
-      <h1>{selectedConnection.dbName}</h1>
+      <h1 onClick={() => props.history.push('/edit/'+selectedConnection.id)}>{selectedConnection.dbName}</h1>
       <h2 onClick={()=>props.history.push('/')}>My Connections</h2>
     </Container>
   )

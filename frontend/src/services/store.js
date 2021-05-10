@@ -2,7 +2,7 @@ import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import Cookie from 'js-cookie';
 import { tableDependenciesReducer, tablesInfoReducer } from './reducers/tableReducers';
-import { getConnectionsReducer, newConnectionReducer, setConnectionReducer } from './reducers/userReducer';
+import { editConnectionReducer, getConnectionsReducer, newConnectionReducer, setConnectionReducer } from './reducers/userReducer';
 import { objectListReducer, userDependenciesReducer } from './reducers/objectReducers';
 
 const selectedConn = Cookie.getJSON("selectedConnection") || {};
@@ -15,7 +15,8 @@ const reducer = combineReducers({
   objectsList: objectListReducer,
   dataBases: getConnectionsReducer,
   userDependencies: userDependenciesReducer,
-  selectedConnection: setConnectionReducer
+  selectedConnection: setConnectionReducer,
+  editedConnection: editConnectionReducer
 });
 
 const conposeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

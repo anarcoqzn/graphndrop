@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import Header from './Header';
-import {Container, SidebarContainer, GraphContainer, SideBarListItem}  from './styles';
+import {Container, SidebarContainer, DashboardContainer, SideBarListItem}  from './styles';
 import DepGraph from './DepGraph';
 import graphTypesConstants from '../../services/constants/graphTypeConstants';
 
@@ -32,9 +32,9 @@ export default function Home(props) {
           </ul>
         </SidebarContainer>
 
-        <GraphContainer>
+        <DashboardContainer>
           <DepGraph type={typeGraph}/>
-        </GraphContainer>
+        </DashboardContainer>
       </Container>
     </div>
   )

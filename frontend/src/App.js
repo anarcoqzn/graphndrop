@@ -5,6 +5,7 @@ import Home from "./components/Home";
 import InitialPage from './components/InitialPage';
 import Login from './components/Login';
 import ConnectBD from './components/ConnectBD';
+import EditBD from './components/EditBD';
 
 function App() {
   return (
@@ -15,7 +16,8 @@ function App() {
           <Route exact path='/' component={InitialPage}/>
           <Route path='/login' component={Login} />
           <Route path='/home' component={Home} />
-          <Route path='/connect' component={ConnectBD}/>
+          <Route path='/connect' component={ConnectBD} />
+          <Route path='/edit/:id' component={EditBD} />
         </Switch>
       </BrowserRouter>
     </div>

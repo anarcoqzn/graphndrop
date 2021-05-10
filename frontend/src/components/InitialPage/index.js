@@ -14,7 +14,7 @@ export default function InitialPage(props) {
   const dispatch = useDispatch();
 
   const handleConnClick = (connection) => {
-    dispatch(setConnection(connection.id));
+    dispatch(setConnection(connection));
     props.history.push('/home/' + connection.id);
   }
 

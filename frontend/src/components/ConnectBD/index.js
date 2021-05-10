@@ -1,11 +1,11 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 import { Input } from '../Input';
 import { Button } from '../Button';
 import { InstructionsContainer, InstructionsContent, NewConnection } from './styles';
-
 import { useDispatch } from 'react-redux';
 import { newConnection } from '../../services/actions/userActions';
+import Cookies from 'js-cookie';
 
 export default function ConnectBD(props) {
   const [dbName, setDBName] = useState('');
@@ -15,7 +15,6 @@ export default function ConnectBD(props) {
   const [heightOne, setHeightOne] = useState('0');
   const [heightTwo, setHeightTwo] = useState('0');
   
-
   const btnDisabled = dbName.trim().length === 0 || dbUser.trim().length === 0 ||
                       dbUserPassword.trim().length === 0; //|| connectString.trim().length === 0;
 
@@ -23,30 +22,22 @@ export default function ConnectBD(props) {
 
   const handleDBName = (input) => {
     const data = input.target.value;
-    if (data !== '' && data.trim().length > 0) {
-      setDBName(data);
-    }
+    setDBName(data);
   }
 
   const handleDBUser = (input) => {
     const data = input.target.value;
-    if (data !== '' && data.length > 0) {
-      setDBUser(data);
-    }
+    setDBUser(data);
   }
 
   const handleDBUserPassword = (input) => {
     const data = input.target.value;
-    if (data !== '' && data.length > 0) {
-      setDBUserPassword(data);
-    }
+    setDBUserPassword(data);
   }
 
   // const handleConnectString = (input) => {
   //   const data = input.target.value;
-  //   if (data !== '' && data.length > 0) {
-  //     setConnectString(data);
-  //   }
+  //  setConnectString(data);
   // }
 
   const submitConn = async () => {
@@ -74,14 +65,13 @@ export default function ConnectBD(props) {
   return (
     <NewConnection>
       <h1>Create a new connection</h1>
-
+      
       <div className="inputs">
         <Input id='db-name' type='text' value={dbName} onChange={handleDBName} placeholder='Connect String Variable (Ex: my_db_high)' />
         <Input id='db-user' type='text' value={dbUser} onChange={handleDBUser} placeholder='USER' />
         <Input id='db-user-password' type='password' value={dbUserPassword} onChange={handleDBUserPassword} placeholder='PASSWORD' />
         {/* Check this in the future: It may be possible to connect using only a connectString directly */}
         {/* <Input id="instant-client-path" type="text" value={connectString} onChange={handleConnectString} placeholder="Connect String" /> */}
-
         <Button disabled={ btnDisabled } color="darkorange" onClick={submitConn}>CONNECT</Button>
       </div>
       <InstructionsContainer>

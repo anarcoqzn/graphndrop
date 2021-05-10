@@ -45,4 +45,20 @@ function setConnectionReducer(state = { selectedConnection: [] }, action) {
   }
 }
 
-export { newConnectionReducer, getConnectionsReducer, setConnectionReducer };
+function editConnectionReducer(state = { editedConnection: [] }, action) {
+  switch (action.type) {
+    case userConstants.EDIT_CONNECTION_REQUEST:
+      return { loading: true };
+    
+    case userConstants.EDIT_CONNECTION_SUCCESS:
+      return { loading: false, editedConnection: action.payload };
+    
+    case userConstants.EDIT_CONNECTION_FAIL:
+      return { loading: false, error: action.payload };
+  
+    default:
+      return state;
+  }
+}
+
+export { newConnectionReducer, getConnectionsReducer, setConnectionReducer, editConnectionReducer };

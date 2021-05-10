@@ -1,6 +1,6 @@
 import userConstants from '../constants/userConstants';
 import api from '../api'
-import Cookie from 'js-cookie';
+import Cookies from 'js-cookie';
 
 const newConnection = (data) => async (dispatch) => {
   try {
@@ -22,12 +22,12 @@ const getConnections = () => async (dispatch) => {
   }
 }
 
-const setConnection = (connID) => async (dispatch) => {
+const setConnection = (conn) => async (dispatch) => {
   try {
-    dispatch({ type: userConstants.SET_CONNECTION_REQUEST, payload: connID });
-    const { data } = await api.patch('/connections', { id: connID });
+    dispatch({ type: userConstants.SET_CONNECTION_REQUEST, payload: conn });
+    Cookies.set("selectedConnection", JSON.stringify(conn));
+    const { data } = await api.patch('/connections', { id: conn.id });
     dispatch({ type: userConstants.SET_CONNECTION_SUCCESS, payload: data });
-    Cookie.set("selectedConnection", JSON.stringify(data));
   } catch (error) {
     dispatch({ type: userConstants.SET_CONNECTION_FAIL, payload: error.response });
   }
@@ -43,4 +43,14 @@ const deleteConnection = (connID) => async (dispatch) => {
   }
 }
 
-export { newConnection, getConnections, setConnection,deleteConnection };
+const editConnection = (connID, data) => async (dispatch) => {
+  try {
+    dispatch({ type: userConstants.EDIT_CONNECTION_REQUEST, payload: connID });
+    const response = await api.put(`/connections/${connID}`, data);
+    dispatch({ type: userConstants.EDIT_CONNECTION_SUCCESS, payload: response.data });
+  } catch (error) {
+    dispatch({ type: userConstants.EDIT_CONNECTION_FAIL, payload: error.response });
+  }
+}
+
+export { newConnection, getConnections, setConnection, deleteConnection, editConnection };

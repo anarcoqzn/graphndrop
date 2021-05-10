@@ -6,9 +6,9 @@ export const Container = styled.div`
     display: flex;
 `;
 
-export const GraphContainer = styled.div `
+export const DashboardContainer = styled.div `
     width: 80%;
-    height: 95;
+    height: 95vh;
     display: flex;
 `;
 
