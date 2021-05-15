@@ -74,7 +74,7 @@ export default function DepGraph(props) {
       case 'FUNCTION':
         return 'star';
       default:
-        break;
+        return 'wye';
     }
   }
 
