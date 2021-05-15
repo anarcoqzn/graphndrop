@@ -7,13 +7,7 @@ const config = {
   dbName:  undefined
 }
 
-const connections = [{
-  connectString:"DBTCC_HIGH",
-	user:"ANARCO",
-  password: "KaPç&ZX10#!Ç",
-  dbName: 'DBTCC_HIGH',
-  id:0
-}];
+const connections = [];
 
 module.exports = {
   async checkConnection(_,res) {

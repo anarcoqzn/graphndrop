@@ -1,9 +1,47 @@
-const oracledb = require('oracledb');
+const oracledb = require("oracledb");
 const dbconfig = require('../../dbconfig');
 
 module.exports = {
-  async getTableDependencies(_, res) {
+  async getAllObjects() {
+    let connection;
+    let response;
+    try {
+      connection = await oracledb.getConnection(dbconfig.config);
+      const {metaData, rows} = await connection.execute(
+        `select object_name, object_id, object_type, created, last_ddl_time, status from user_objects`
+      );
 
+      const name = metaData.findIndex(obj => (obj.name === 'OBJECT_NAME'));
+      const id = metaData.findIndex(obj => (obj.name === 'OBJECT_ID'));
+      const type = metaData.findIndex(obj => (obj.name === 'OBJECT_TYPE'));
+      
+      const created = metaData.findIndex(obj => (obj.name === 'CREATED'));
+      const lastDdlTime = metaData.findIndex(obj => (obj.name === 'LAST_DDL_TIME'));
+      const status = metaData.findIndex(obj => (obj.name === 'STATUS'));
+      
+      response = rows.map(obj => {
+        return {
+          'object_name': obj[name],
+          'object_id': obj[id],
+          'object_type': obj[type],
+          'created': obj[created],
+          'lastDDLTime': obj[lastDdlTime],
+          'status': obj[status]
+        }
+      });
+      
+      return response;
+    } catch (error) {
+      return error;
+    } finally {
+      try {
+        if (connection) await connection.close();
+      } catch (error) {
+        return error;
+      }
+    }
+  },
+  async getTableDependencies() {
     let connection;
     try {
       const tablesDependencies = [];
@@ -31,7 +69,7 @@ module.exports = {
           (obj[uConsNameIndex] === constraint[consNameIndex]))
         
         tablesDependencies.push({
-          'constraint_name': constraint[rConsNameIndex],
+          'constraint_name': constraint[uConsNameIndex],
           'from': {
             'table': from[uTableNameIndex],
             'column':from[uColumnNameIndex]
@@ -42,19 +80,19 @@ module.exports = {
           }
         })
       });
-      return res.json(tablesDependencies);
+      return tablesDependencies;
     } catch (error) {
-      return res.status(500).send(error);
+      return error;
     } finally {
       try {
         if (connection) await connection.close();
       } catch (error) {
-        return res.status(500).send(error);
+        return error;
       }
     }
   },
 
-  async getTables(_, res) {
+  async getTables() {
     let connection;
     const tablesInfo = [];
     try {
@@ -96,24 +134,25 @@ module.exports = {
           })
       }
 
-      return res.json(tablesInfo);
+      return (tablesInfo);
     } catch (error) {
-      return res.status(500).send(error);
+      return (error);
     } finally {
       try {
         if (connection) await connection.close();
       } catch (error) {
-        return res.status(500).send(error);
+        return (error);
       }
     }
   },
-  async getUserDependencies(req, res) {
+
+  async getUserDependencies() {
     let connection;
     let response = [];
     try {
       connection = await oracledb.getConnection(dbconfig.config);
-      const {metaData, rows} = await connection.execute(
-        `select * from user_dependencies`
+      const { metaData, rows } = await connection.execute(
+        `select * from user_dependencies where referenced_owner='${dbconfig.config.user}'`
       );
 
       const name = metaData.findIndex(obj => (obj.name === "NAME"));
@@ -138,15 +177,15 @@ module.exports = {
         }
       });
 
-      return res.send(response);
+      return (response);
     } catch (error) {
-      return res.status(500).send(error);
+      return (error);
     } finally {
       if (connection) {
         try {
           await connection.close();
         } catch (error) {
-          console.log(error);
+          return (error);
         }
       } 
     }
