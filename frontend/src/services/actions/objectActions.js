@@ -21,4 +21,12 @@ const getUserDependencies = () => async (dispatch) => {
   }
 }
 
-export { getObjectsList, getUserDependencies };
+const selectObject = (obj) => async (dispatch) => {
+  await dispatch({ type: objectConstants.SELECT_OBJECT_SUCCESS, payload: obj });
+}
+
+const unSelectObject = () => async (dispatch) => {
+  await dispatch({ type: objectConstants.SELECT_OBJECT_REQUEST, payload: {} });
+}
+
+export { getObjectsList, getUserDependencies, selectObject, unSelectObject };

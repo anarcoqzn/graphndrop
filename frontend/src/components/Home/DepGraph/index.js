@@ -2,7 +2,7 @@ import React,{ useEffect, useState } from 'react';
 import { Graph } from 'react-d3-graph';
 import { useDispatch, useSelector } from 'react-redux';
 import { getTableDependencies } from '../../../services/actions/tableActions';
-import { getObjectsList, getUserDependencies } from '../../../services/actions/objectActions';
+import { getObjectsList, getUserDependencies, selectObject, unSelectObject } from '../../../services/actions/objectActions';
 import graphTypes from '../../../services/constants/graphTypeConstants';
 import { Error, Loading } from '../../Loading&Error';
 
@@ -16,6 +16,8 @@ export default function DepGraph(props) {
   
   const userDep = useSelector(state => state.userDependencies);
   const { loading: loadingUserDep, userDependencies, error: errorUserDep } = userDep;
+
+  const { selectedObject } = useSelector(state => state.selectedObject);
 
   const [data, setData] = useState({nodes:[],links:[]});
   
@@ -48,8 +50,11 @@ export default function DepGraph(props) {
       gravity: -100 * data.nodes.length % window.innerWidth,
     },
   };
-  const onClickNode = function(nodeId) {
-    window.alert(`Clicked node ${nodeId}`);
+  const onClickNode = function (nodeId) {
+    const obj = objectsList.find(elem => elem.object_name === nodeId);
+
+    if ( selectedObject && selectedObject.object_name && selectedObject.object_name === obj.object_name) dispatch(unSelectObject());
+    else { dispatch(selectObject(obj)); }
   };
   
   const onClickLink = function(source, target) {
@@ -63,11 +68,11 @@ export default function DepGraph(props) {
       case 'PROCEDURE':
         return 'triangle';
       case 'TRIGGER':
-        return 'diamond';
+        return 'cross';
       case 'VIEW':
         return 'star';
       case 'FUNCTION':
-        return 'cross';
+        return 'star';
       default:
         break;
     }

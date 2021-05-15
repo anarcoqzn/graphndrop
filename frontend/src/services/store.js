@@ -3,7 +3,7 @@ import thunk from 'redux-thunk';
 import Cookie from 'js-cookie';
 import { tableDependenciesReducer, tablesInfoReducer } from './reducers/tableReducers';
 import { editConnectionReducer, getConnectionsReducer, newConnectionReducer, setConnectionReducer } from './reducers/userReducer';
-import { objectListReducer, userDependenciesReducer } from './reducers/objectReducers';
+import { objectListReducer, selectedObjectReducer, userDependenciesReducer } from './reducers/objectReducers';
 
 const selectedConn = Cookie.getJSON("selectedConnection") || {};
 const initialState = { selectedConnection: { selectedConn } };
@@ -16,7 +16,8 @@ const reducer = combineReducers({
   dataBases: getConnectionsReducer,
   userDependencies: userDependenciesReducer,
   selectedConnection: setConnectionReducer,
-  editedConnection: editConnectionReducer
+  editedConnection: editConnectionReducer,
+  selectedObject : selectedObjectReducer
 });
 
 const conposeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

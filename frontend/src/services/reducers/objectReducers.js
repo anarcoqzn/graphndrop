@@ -26,4 +26,17 @@ function userDependenciesReducer(state = { userDependencies: [] }, action) {
   }
 }
 
-export { objectListReducer, userDependenciesReducer };
+function selectedObjectReducer(state = { selectedObject: {} }, action) {
+  switch (action.type) {
+    case objectConstants.SELECT_OBJECT_REQUEST:
+      return { loading: true };
+    case objectConstants.SELECT_OBJECT_SUCCESS:
+      return { loading: false, selectedObject: action.payload };
+    case objectConstants.SELECT_OBJECT_FAIL:
+      return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+}
+
+export { objectListReducer, userDependenciesReducer, selectedObjectReducer };
