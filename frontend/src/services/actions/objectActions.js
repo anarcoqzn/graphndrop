@@ -25,8 +25,16 @@ const selectObject = (obj) => async (dispatch) => {
   await dispatch({ type: objectConstants.SELECT_OBJECT_SUCCESS, payload: obj });
 }
 
-const unSelectObject = () => async (dispatch) => {
+const cleanSelectObject = () => async (dispatch) => {
   await dispatch({ type: objectConstants.SELECT_OBJECT_SUCCESS, payload: {} });
 }
 
-export { getObjectsList, getUserDependencies, selectObject, unSelectObject };
+const setOperationResult = (obj) => async (dispatch) => {
+  await dispatch({ type: objectConstants.OPERATION_RESULT_SUCCESS, payload: obj });
+}
+
+const cleanOperationResult = () => async (dispatch) => {
+  await dispatch({ type: objectConstants.OPERATION_RESULT_SUCCESS, payload: {} });
+}
+
+export { getObjectsList, getUserDependencies, selectObject, cleanSelectObject, setOperationResult, cleanOperationResult };

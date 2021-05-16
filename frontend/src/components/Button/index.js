@@ -8,8 +8,8 @@ export const Button = styled.button`
   padding: 0.25em 1em;
   border: 1px solid ${props => props.color};
   border-radius: 5px;
-  background-color: #FFF;
-  color: black;
+  background-color: ${props=> props.chosen && props.id && props.id === props.chosen ? props.color : '#FFF'};
+  color: ${props=> props.chosen && props.id && props.id === props.chosen ? 'white' : 'black'};
   cursor: pointer;
   transition: .3s;
   :hover {

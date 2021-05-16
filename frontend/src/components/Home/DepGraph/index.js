@@ -1,22 +1,11 @@
 import React,{ useEffect, useState } from 'react';
 import { Graph } from 'react-d3-graph';
 import { useDispatch, useSelector } from 'react-redux';
-import { getTableDependencies } from '../../../services/actions/tableActions';
-import { getObjectsList, getUserDependencies, selectObject, unSelectObject } from '../../../services/actions/objectActions';
+import { selectObject, cleanSelectObject, cleanOperationResult } from '../../../services/actions/objectActions';
 import graphTypes from '../../../services/constants/graphTypeConstants';
-import { Error, Loading } from '../../Loading&Error';
 
-export default function DepGraph(props) {
+export default function DepGraph({type, objectsList, userDependencies, tableDependencies, setSelectedDepObject}) {
   const dispatch = useDispatch();
-  const tbDependencies = useSelector(state => state.tableDependencies);
-  const { loading: loadingDep, tableDependencies, error: errorDep } = tbDependencies
-  
-  const objList = useSelector(state => state.objectsList);
-  const { loading: loadingObjList, objectsList, error: errorObjList } = objList;
-  
-  const userDep = useSelector(state => state.userDependencies);
-  const { loading: loadingUserDep, userDependencies, error: errorUserDep } = userDep;
-
   const { selectedObject } = useSelector(state => state.selectedObject);
 
   const [data, setData] = useState({nodes:[],links:[]});
@@ -24,7 +13,7 @@ export default function DepGraph(props) {
   // the graph configuration, just override the ones you need
   const myConfig = {
     nodeHighlightBehavior: true,
-    height: window.innerHeight - 50,
+    height: window.innerHeight * 0.70,
     width: window.innerWidth * 0.79,
     directed: true,
     linkHighlightBehavior : true,
@@ -47,18 +36,21 @@ export default function DepGraph(props) {
       strokeLinecap: 'square'
     },
     d3: {
-      gravity: -80 * data.nodes.length % window.innerWidth,
+      gravity: -100*(window.outerHeight/window.outerWidth) * data.nodes.length % window.innerWidth,
     },
   };
   const onClickNode = function (nodeId) {
     const obj = objectsList.find(elem => elem.object_name === nodeId);
-
-    if ( selectedObject && selectedObject.object_name && selectedObject.object_name === obj.object_name) dispatch(unSelectObject());
-    else { dispatch(selectObject(obj)); }
+    setSelectedDepObject({});
+    if ( selectedObject && selectedObject.object_name && selectedObject.object_name === obj.object_name) dispatch(cleanSelectObject());
+    else {
+      dispatch(selectObject(obj));
+    }
+    dispatch(cleanOperationResult());
   };
   
   const onClickLink = function(source, target) {
-    window.alert(`Clicked link between ${source} and ${target}`);
+    // window.alert(`Clicked link between ${source} and ${target}`);
   };
 
   const defineSymbolType = (obj) => {
@@ -79,76 +71,58 @@ export default function DepGraph(props) {
   }
 
   useEffect(() => {
-    dispatch(getObjectsList()).then(async () => {
-      switch (props.type) {
-        case graphTypes.tableDependencies:
-          await dispatch(getTableDependencies());
-          break;
-        case graphTypes.userDependencies:
-          await dispatch(getUserDependencies());
-          break;        
-        default:
-          break;
-      }
-    });
-  }, [dispatch,props]);
-  
-  useEffect(() => {
-    if (props.type && objectsList &&  objectsList.length > 0) {
+    dispatch(cleanSelectObject());
+    dispatch(cleanOperationResult());
+    if (type && objectsList && objectsList.length > 0) {
       setData({ nodes: [], links: [] });
       const tempNodes = [];
 
-      if (props.type === graphTypes.tableDependencies && tableDependencies && tableDependencies.length > 0) {
-       
-        objectsList.forEach(obj => {
-          if (obj.object_type === 'TABLE') tempNodes.push({
-            'id': obj.object_name,
-            'symbolType': defineSymbolType(obj),
-          })
-        });
-
-        setData({
-          nodes: tempNodes,
-          links: tableDependencies.map(dep => {
-            return {
-              'source': dep.from.table,
-              'target': dep.to.table,
-              'labelProperty':dep.constraint_name
-            }
-          })
-        });
-      } else if (props.type === graphTypes.userDependencies && userDependencies && userDependencies.length > 0) {
-        
-        objectsList.forEach(obj => {
-          if (userDependencies.find(elem => elem.name === obj.object_name || elem.refName === obj.object_name)) {
-            tempNodes.push({
+      if (type === graphTypes.tableDependencies) {
+        if (tableDependencies && tableDependencies.length > 0) {
+          objectsList.forEach(obj => {
+            if (obj.object_type === 'TABLE') tempNodes.push({
               'id': obj.object_name,
               'symbolType': defineSymbolType(obj),
-            });
-          }
-        });
-        setData({
-          nodes: tempNodes,
-          links: userDependencies.map(obj => {
-            return {
-              'source': obj.name,
-              'target': obj.refName,
-              'labelProperty': obj.depType
+            })
+          });
+
+          setData({
+            nodes: tempNodes,
+            links: tableDependencies.map(dep => {
+              return {
+                'source': dep.from.table,
+                'target': dep.to.table,
+                'labelProperty': dep.constraint_name
+              }
+            })
+          });
+        }
+      } else if (type === graphTypes.userDependencies) {
+        if (userDependencies && userDependencies.length > 0) {
+          objectsList.forEach(obj => {
+            if (userDependencies.find(elem => elem.name === obj.object_name || elem.refName === obj.object_name)) {
+              tempNodes.push({
+                'id': obj.object_name,
+                'symbolType': defineSymbolType(obj),
+              });
             }
+          });
+          setData({
+            nodes: tempNodes,
+            links: userDependencies.map(obj => {
+              return {
+                'source': obj.name,
+                'target': obj.refName,
+                'labelProperty': obj.depType
+              }
+            })
           })
-        })
+        }
       }
     }
-  }, [objectsList, tableDependencies, userDependencies, props]);
+  }, [type,objectsList, tableDependencies, userDependencies, dispatch]);
 
   return (
-    !props.type ? null :
-    loadingObjList ? <Loading msg={"LOADING OBJECTS LIST ... "}/> :
-    loadingUserDep ? <Loading msg={"LOADING USER DEPENDENCIES OBJECTS ..."}/>:  
-    loadingDep ? <Loading msg={"LOADING DEPENDENCIES ..."}/>:
-    errorObjList ? <Error msg={`ERROR AT LOADING OBJECTS LIST: ERROR ${errorObjList.data.errorNum} STATUS: ${ errorObjList.status}`} /> :
-    errorUserDep ? <Error msg={`ERROR AT LOADING USER DEPENDENCIES: ERROR ${errorUserDep.data.errorNum} STATUS: ${errorUserDep.status}`} />:
-    errorDep ? <Error msg={`ERROR AT LOADING DEPENDENCIES: ERROR: ${errorDep.data.errorNum} STATUS: ${errorDep.status}`}/>:
     <Graph
       id="graph-id" // id is mandatory
       data={data}

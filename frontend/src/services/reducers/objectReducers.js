@@ -39,4 +39,16 @@ function selectedObjectReducer(state = { selectedObject: {} }, action) {
   }
 }
 
-export { objectListReducer, userDependenciesReducer, selectedObjectReducer };
+function operationResultReducer(state = { operationResult: {} }, action) {
+  switch (action.type) {
+    case objectConstants.OPERATION_RESULT_REQUEST:
+      return { loading: true };
+    case objectConstants.OPERATION_RESULT_SUCCESS:
+      return { loading: false, operationResult: action.payload };
+    case objectConstants.OPERATION_RESULT_FAIL:
+      return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+}
+export { objectListReducer, userDependenciesReducer, selectedObjectReducer, operationResultReducer };
