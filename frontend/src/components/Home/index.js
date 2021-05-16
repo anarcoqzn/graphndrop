@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import Header from './Header';
-import {Container, SidebarContainer, DashboardContainer, SideBarListItem}  from './styles';
+import {Container, SidebarContainer, DashboardContainer, SideBarListItem }  from './styles';
 import DepGraph from './DepGraph';
 import graphTypesConstants from '../../services/constants/graphTypeConstants';
+import SideBarOps from './SideBarOps';
 
 export default function Home(props) {
   const [tbDepView, setTbDepView] = useState(false);
@@ -30,10 +31,12 @@ export default function Home(props) {
           
           <SideBarListItem id="tbDepBtn" selected={tbDepView} onClick={handleTbDepClick}>Table Dependencies <br/> (Foreign Key)</SideBarListItem>
           </ul>
+          
+          <SideBarOps />
         </SidebarContainer>
 
         <DashboardContainer>
-          <DepGraph type={typeGraph}/>
+          <DepGraph type={typeGraph} />
         </DashboardContainer>
       </Container>
     </div>

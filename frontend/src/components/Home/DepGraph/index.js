@@ -25,7 +25,7 @@ export default function DepGraph(props) {
   const myConfig = {
     nodeHighlightBehavior: true,
     height: window.innerHeight - 50,
-    width: window.innerWidth - 260,
+    width: window.innerWidth * 0.79,
     directed: true,
     linkHighlightBehavior : true,
     node: {
@@ -47,7 +47,7 @@ export default function DepGraph(props) {
       strokeLinecap: 'square'
     },
     d3: {
-      gravity: -100 * data.nodes.length % window.innerWidth,
+      gravity: -80 * data.nodes.length % window.innerWidth,
     },
   };
   const onClickNode = function (nodeId) {

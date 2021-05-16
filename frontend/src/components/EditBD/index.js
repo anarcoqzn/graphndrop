@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Cookies from 'js-cookie';
 import { Input } from '../Input';
 import { Container } from './styles';
@@ -15,7 +15,7 @@ export default function EditBD(props) {
   const [dbUserPassword, setDBUserPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
 
-  const { loading, editedConnection, error } = useSelector(state => state.editedConnection);
+  const { loading, error } = useSelector(state => state.editedConnection);
 
   const [viewPasswd, setViewPasswd] = useState(false);
   const [viewNewPasswd, setViewNewPasswd] = useState(false);

@@ -18,6 +18,13 @@ export const SidebarContainer = styled.div`
     display: grid;
     background-color: whitesmoke;
     padding: 10px;
+    grid-template-rows: 100px auto;
+    ul {
+        list-style: none;
+        li:not(:last-child) {
+            margin-bottom: 5px;
+        }
+    }
 `;
 
 export const SideBarListItem = styled.li`

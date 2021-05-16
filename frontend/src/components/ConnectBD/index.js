@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom';
 import { Input } from '../Input';
 import { Button } from '../Button';
 import { InstructionsContainer, InstructionsContent, NewConnection } from './styles';
 import { useDispatch } from 'react-redux';
 import { newConnection } from '../../services/actions/userActions';
-import Cookies from 'js-cookie';
 
 export default function ConnectBD(props) {
   const [dbName, setDBName] = useState('');
