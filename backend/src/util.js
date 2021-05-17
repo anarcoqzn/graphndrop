@@ -1,4 +1,4 @@
-const keyWords = ['CREATE', 'DROP', 'DELETE', 'INSERT', 'ALTER', 'UPDATE','SELECT'];
+const keyWords = ['CREATE', 'DROP', 'DELETE', 'INSERT', 'ALTER', 'UPDATE','SELECT','ADMIN'];
 
 module.exports = {
   randomString : (length = 36) => {
