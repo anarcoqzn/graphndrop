@@ -64,7 +64,7 @@ export default function DepGraph({type, objectsList, userDependencies, tableDepe
       case 'VIEW':
         return 'star';
       case 'FUNCTION':
-        return 'star';
+        return 'diamond';
       default:
         return 'wye';
     }
