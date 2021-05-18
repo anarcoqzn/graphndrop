@@ -37,4 +37,13 @@ const cleanOperationResult = () => async (dispatch) => {
   await dispatch({ type: objectConstants.OPERATION_RESULT_SUCCESS, payload: {} });
 }
 
-export { getObjectsList, getUserDependencies, selectObject, cleanSelectObject, setOperationResult, cleanOperationResult };
+const setGraphData = (data) => async (dispatch) => {
+  try {
+    await dispatch({ type: objectConstants.SET_GRAPH_DATA_REQUEST });
+    await dispatch({ type: objectConstants.SET_GRAPH_DATA_SUCCESS, payload: data });
+  } catch (error) {
+    await dispatch({ type: objectConstants.SET_GRAPH_DATA_FAIL, payload: error });
+  }
+}
+
+export { getObjectsList, getUserDependencies, selectObject, cleanSelectObject, setOperationResult, cleanOperationResult, setGraphData };

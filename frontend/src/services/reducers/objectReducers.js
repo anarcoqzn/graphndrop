@@ -51,4 +51,20 @@ function operationResultReducer(state = { operationResult: {} }, action) {
       return state;
   }
 }
-export { objectListReducer, userDependenciesReducer, selectedObjectReducer, operationResultReducer };
+
+function setGraphDataReducer(state = { graphData: [] }, action) {
+  switch (action.type) {
+    case objectConstants.SET_GRAPH_DATA_REQUEST:
+      return { loading: true };
+    
+    case objectConstants.SET_GRAPH_DATA_SUCCESS:
+      return { loading: false, graphData: action.payload };
+    
+    case objectConstants.SET_GRAPH_DATA_FAIL:
+      return { loading: false, error: action.payload };
+
+    default:
+      return state;
+  }
+}
+export { objectListReducer, userDependenciesReducer, selectedObjectReducer, operationResultReducer, setGraphDataReducer };

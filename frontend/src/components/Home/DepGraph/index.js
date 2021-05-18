@@ -1,12 +1,14 @@
 import React,{ useEffect, useState } from 'react';
 import { Graph } from 'react-d3-graph';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectObject, cleanSelectObject, cleanOperationResult } from '../../../services/actions/objectActions';
+import { selectObject, cleanSelectObject, cleanOperationResult, setGraphData } from '../../../services/actions/objectActions';
 
 export default function DepGraph({ objectsList, userDependencies, tableDependencies, setSelectedDepObject }) {
   
   const dispatch = useDispatch();
   const { selectedObject } = useSelector(state => state.selectedObject);
+  const { operationResult } = useSelector(state => state.operationResult);
+  const { graphData } = useSelector(state => state.graphData);
 
   const [data, setData] = useState({nodes:[],links:[]});
   
@@ -20,19 +22,16 @@ export default function DepGraph({ objectsList, userDependencies, tableDependenc
     node: {
       highlightStrokeColor: "darkblue",
       symbolType: "square",
-      fontSize: 14,
-      size: 1000,
       highlightFontSize: 14,
       highlightFontWeight: 'bold',
       labelPosition: 'top',
     },
     link: {
-      highlightColor: "lightblue",
-      strokeWidth: 4,
+      highlightColor: "black",
+      strokeWidth: 2,
       renderLabel: true,
       fontSize:15,
-      highlightFontSize: 15,
-      strokeLinecap: 'square'
+      highlightFontSize: 15
     },
     d3: {
       gravity: -60*(window.innerHeight/window.innerWidth)*data.nodes.length % window.innerWidth,
@@ -77,6 +76,49 @@ export default function DepGraph({ objectsList, userDependencies, tableDependenc
   }, [selectedObject, data.nodes]);
 
   useEffect(() => {
+    if (operationResult && operationResult.result && operationResult.result.length > 0 && selectedObject &&       selectedObject.object_name) {
+      const affectedObjects = operationResult.result;
+      
+      dispatch(setGraphData(data)).then(() => {
+        const tempNodes = data.nodes.map(node => {
+          if (node.id !== selectedObject.object_name) {
+            if (affectedObjects.find(obj => obj.object_name === node.id)) {
+              return {
+                'id': node.id,
+                'color': 'lightcoral',
+                'symbolType': node.symbolType
+              }
+            } else {
+              return node;
+            }
+          } else {
+            return {
+              'id': node.id,
+              'color': 'lightcoral',
+              'symbolType': 'wye'
+            }
+          }
+        })
+        
+        const tempLinks = data.links.map(link => {
+          if (link.target !== selectedObject.object_name) {
+            return link;
+          } else {
+            return {
+              'source': link.source,
+              'target': link.target,
+              'labelProperty': link.labelProperty,
+              'color': 'tomato',
+              'highlightColor': 'red'
+            }
+          }
+        })
+        setData({ nodes: tempNodes, links: tempLinks });
+      });
+    }
+  }, [operationResult, selectedObject, dispatch]);
+
+  useEffect(() => {
     dispatch(cleanSelectObject());
     dispatch(cleanOperationResult());
     if (objectsList && objectsList.length > 0 && tableDependencies && tableDependencies.length > 0 && userDependencies && userDependencies.length > 0) {
@@ -91,7 +133,7 @@ export default function DepGraph({ objectsList, userDependencies, tableDependenc
             tempNodes.push({
               'id': obj.object_name,
               'symbolType': defineSymbolType(obj),
-              'color': obj.status === "VALID" ? "darkseagreen" : "lightcoral"
+              'color': obj.status === "VALID" ? "darkseagreen" : obj.status === "INVALID" ? "lightcoral":"black"
             })
           }
         });
