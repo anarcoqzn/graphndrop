@@ -14,6 +14,7 @@ Para rodar a aplicação é necessário ter instalado e configurado em sua máqu
 #### No backend
 - Pelo terminal, acesse o diretório do backend e rode o comando ```npm install``` para baixar e instalar as dependências.
 - Para adicionar uma conexão ao banco de dados, é necessário baixar as credenciais (Wallet) do seu banco de dados e extrair as informações do arquivo baixado para a pasta /network/admin que está dentro do diretório do Instant Client. Se esse diretórios não existirem, crie-os e extraia o arquivo.
+- Na primeira execução da aplicação, é necessário descomentar a linha 9 do arquivo index.js e alterar o caminho do diretório passado no parâmetro do comando initOracleClient para o caminho atual deste diretório no seu computador.
 - Com isso, você está pronto para subir o servidor localmente na porta 3001 com o comando```npm run dev```.
 
 #### No frontend
