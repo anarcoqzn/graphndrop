@@ -49,25 +49,20 @@ export const SidebarContainer = styled.div`
     display: grid;
     background-color: whitesmoke;
     padding: 10px;
-    grid-template-rows: 100px auto;
-    ul {
-        list-style: none;
-        li:not(:last-child) {
-            margin-bottom: 5px;
-        }
-    }
+    grid-template-rows: 150px auto;
 `;
 
-export const SideBarListItem = styled.li`
-    width: 100%;
-    padding: 10px;
-    border: 1px solid white;
-    cursor: pointer;
-    transition: .3s;
-    :hover{
-        background-color: white;
-        border: 1px solid black;
-    }
+export const SideBarListFigures = styled.div`
+    display: grid;
+    grid-template-columns: auto auto;
+    justify-content: center;
+    align-items: center;
+    grid-column-gap: 5px;
 
-    ${props=> props.selected ? "background-color: white;border: 1px solid black;" : null}
+    svg{
+        color:darkseagreen;
+    }
+    #trigger {
+      stroke-width: 5px;
+    }
 `;

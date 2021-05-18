@@ -12,7 +12,6 @@ const rotate360 = keyframes`
 const LoadingSpinner = styled.div`
   animation: ${rotate360} 1s linear infinite;
   transform: translateZ(0);
-  
   border-top: 4px solid grey;
   border-right: 4px solid grey;
   border-bottom: 4px solid grey;
@@ -21,24 +20,25 @@ const LoadingSpinner = styled.div`
   width:2vw;
   height: 2vw;
   border-radius: 50%;
+  margin-left: auto;
+  margin-right: auto;
 `;
 
 const Container = styled.div`
   display: grid;
   align-items: center;
-  height: 10px;
-  justify-items: center;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: auto;
-  margin-bottom: auto;
-  padding: 0px;
+  justify-content: center;
+  position: absolute;
+  top: 50%;
+  margin-top: -25px;
+  width: 100%;
+  height: 50px;
 `;
 
 export function Loading(props) {
   return (
     <Container>
-      <h1>{props.msg}</h1>
+      <h1>{props.msg || "LOADING"}</h1>
       <LoadingSpinner />
     </Container>
   )

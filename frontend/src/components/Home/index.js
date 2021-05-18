@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Header from './Header';
-import {Container, SidebarContainer, DashboardContainer, SideBarListItem, GraphContainer, OperationOverviewContainer, OperationDetails }  from './styles';
+import {Container, SidebarContainer, DashboardContainer, SideBarListFigures, GraphContainer, OperationOverviewContainer, OperationDetails }  from './styles';
 import DepGraph from './DepGraph';
-import graphTypesConstants from '../../services/constants/graphTypeConstants';
 import SideBarOps from './SideBarOps';
 import { useDispatch, useSelector } from 'react-redux';
 import { getTableDependencies } from '../../services/actions/tableActions';
@@ -10,11 +9,9 @@ import { getObjectsList, getUserDependencies } from '../../services/actions/obje
 import { Error, Loading } from '../Loading&Error';
 import { Button } from '../Button';
 import { ObjectInfo } from './SideBarOps/styles';
+import { BsSquareFill, BsFillTriangleFill, BsPlus, BsStarFill, BsFillDiamondFill, BsFillCircleFill } from 'react-icons/bs';
 
 export default function Home(props) {
-  const [tbDepView, setTbDepView] = useState(false);
-  const [usDepView, setUsDepView] = useState(false);
-  const [typeGraph, setTypeGraph] = useState('');
   const [selectedDepObject, setSelectedDepObject] = useState({});
   
   const dispatch = useDispatch();
@@ -29,20 +26,7 @@ export default function Home(props) {
   const userDep = useSelector(state => state.userDependencies);
   const { loading: loadingUserDep, userDependencies, error: errorUserDep } = userDep;  
   
-  const handleTbDepClick = () => {
-    setTypeGraph(graphTypesConstants.tableDependencies);
-    setUsDepView(false);
-    setTbDepView(true);
-    setSelectedDepObject({});
-  };
-
-  const handleUsDepClick = () => {
-    setTypeGraph(graphTypesConstants.userDependencies);
-    setTbDepView(false);
-    setUsDepView(true);
-    setSelectedDepObject({});
-  };
-
+  
   const handleSelectObject = (object) => {
     if (object.object_id === selectedDepObject.object_id) {
       setSelectedDepObject({});
@@ -73,12 +57,11 @@ export default function Home(props) {
         if (!tableDependencies || tableDependencies.length === 0) await dispatch(getTableDependencies());
       });
     });
+
   },[dispatch, objectsList, tableDependencies, userDependencies]);
 
   return (
-    loadingObjList ? <Loading msg={"LOADING OBJECTS LIST ... "}/> :
-    loadingUserDep ? <Loading msg={"LOADING USER DEPENDENCIES OBJECTS ..."}/>:  
-    loadingDep ? <Loading msg={"LOADING DEPENDENCIES ..."}/>:
+    loadingObjList || loadingUserDep || loadingDep ? <Loading />:  
     errorObjList ? <Error msg={`ERROR AT LOADING OBJECTS LIST: ERROR ${errorObjList.data.errorNum} STATUS: ${ errorObjList.status}`} /> :
     errorUserDep ? <Error msg={`ERROR AT LOADING USER DEPENDENCIES: ERROR ${errorUserDep.data.errorNum} STATUS: ${errorUserDep.status}`} />:
     errorDep ? <Error msg={`ERROR AT LOADING DEPENDENCIES: ERROR: ${errorDep.data.errorNum} STATUS: ${errorDep.status}`}/>:
@@ -86,11 +69,14 @@ export default function Home(props) {
       <Header props={props}/>
       <Container>
         <SidebarContainer>
-          <ul>
-          <SideBarListItem id="usDepBtn" selected={usDepView} onClick={handleUsDepClick}>User Dependencies</SideBarListItem>
-          
-          <SideBarListItem id="tbDepBtn" selected={tbDepView} onClick={handleTbDepClick}>Table Dependencies <br/> (Foreign Key)</SideBarListItem>
-          </ul>
+          <SideBarListFigures>
+            <BsSquareFill/> <label>Table</label>
+            <BsFillTriangleFill /> <label>Procedure</label>
+            <BsPlus id="trigger"/> <label>Trigger</label>
+            <BsStarFill/> <label>View</label>
+            <BsFillDiamondFill /> <label>Function</label>
+            <BsFillCircleFill /> <label>Other</label>
+          </SideBarListFigures>
           
           <SideBarOps objectsList={objectsList}
             tableDependencies={tableDependencies}
@@ -100,15 +86,11 @@ export default function Home(props) {
 
         <DashboardContainer>
           <GraphContainer>
-          {typeGraph ?
-            <DepGraph type={typeGraph}
-              objectsList={objectsList}
+          <DepGraph objectsList={objectsList}
               tableDependencies={tableDependencies}
               userDependencies={userDependencies}
-              setSelectedDepObject={setSelectedDepObject} />
-            :
-              null
-          }
+              setSelectedDepObject={setSelectedDepObject} 
+              selectedDepObject={selectedDepObject}/>
           </GraphContainer>
           
           {loadingOp ? <OperationOverviewContainer> <Loading /></OperationOverviewContainer> :

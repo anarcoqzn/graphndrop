@@ -3,7 +3,6 @@ import GlobalStyle from './styles/global';
 
 import Home from "./components/Home";
 import InitialPage from './components/InitialPage';
-import Login from './components/Login';
 import ConnectBD from './components/ConnectBD';
 import EditBD from './components/EditBD';
 
@@ -14,7 +13,6 @@ function App() {
       <BrowserRouter>
         <Switch>
           <Route exact path='/' component={InitialPage}/>
-          <Route path='/login' component={Login} />
           <Route path='/home' component={Home} />
           <Route path='/connect' component={ConnectBD} />
           <Route path='/edit/:id' component={EditBD} />
