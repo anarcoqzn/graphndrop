@@ -34,18 +34,22 @@ export default function DepGraph({ objectsList, userDependencies, tableDependenc
       highlightFontSize: 15
     },
     d3: {
-      gravity: -60*(window.innerHeight/window.innerWidth)*data.nodes.length % window.innerWidth,
+      gravity: -40*(window.innerHeight/window.innerWidth)*data.nodes.length % window.innerWidth,
     },
   };
   const onClickNode = function (nodeId) {
-    const obj = objectsList.find(elem => elem.object_name === nodeId);
-    setSelectedDepObject({});
-    if (selectedObject && selectedObject.object_name && selectedObject.object_name === obj.object_name)
-      dispatch(cleanSelectObject());
-    else {
-      dispatch(selectObject(obj));
+
+    if (!data.nodes.find(elem => elem.symbolType === 'wye')) {
+      const obj = objectsList.find(elem => elem.object_name === nodeId);
+      setSelectedDepObject({});
+      if (selectedObject && selectedObject.object_name && selectedObject.object_name === obj.object_name) {
+        dispatch(cleanSelectObject());
+      }
+      else {
+        dispatch(selectObject(obj));
+      }
+      dispatch(cleanOperationResult());
     }
-    dispatch(cleanOperationResult());
   };
   
   const onClickLink = function(source, target) {
@@ -72,11 +76,13 @@ export default function DepGraph({ objectsList, userDependencies, tableDependenc
   useEffect(() => {
     if (selectedObject && selectedObject.object_name)
       data.nodes.forEach(elem => (elem.id === selectedObject.object_name) ?
-        elem.strokeColor = 'black' : elem.strokeColor='');
+        elem.strokeColor = 'black' : elem.strokeColor = '');
+    else
+      data.nodes.forEach(elem => elem.strokeColor = '');
   }, [selectedObject, data.nodes]);
 
   useEffect(() => {
-    if (operationResult && operationResult.result && operationResult.result.length > 0 && selectedObject &&       selectedObject.object_name) {
+    if (operationResult && operationResult.operation && selectedObject && selectedObject.object_name) {
       const affectedObjects = operationResult.result;
       
       dispatch(setGraphData(data)).then(() => {
@@ -108,8 +114,7 @@ export default function DepGraph({ objectsList, userDependencies, tableDependenc
               'source': link.source,
               'target': link.target,
               'labelProperty': link.labelProperty,
-              'color': 'tomato',
-              'highlightColor': 'red'
+              'color': 'tomato'
             }
           }
         })
@@ -117,6 +122,16 @@ export default function DepGraph({ objectsList, userDependencies, tableDependenc
       });
     }
   }, [operationResult, selectedObject, dispatch]);
+
+  useEffect(() => {
+    if (graphData && graphData.operation === "RESTORE") {
+      setSelectedDepObject({});
+      setData(graphData.data);
+      dispatch(setGraphData({}));
+      dispatch(cleanOperationResult());
+      dispatch(cleanSelectObject());
+    }
+  }, [graphData, dispatch, setSelectedDepObject]);
 
   useEffect(() => {
     dispatch(cleanSelectObject());

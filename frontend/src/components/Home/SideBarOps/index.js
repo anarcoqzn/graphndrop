@@ -2,10 +2,11 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Button } from '../../Button';
 import { Container, ObjectInfo } from './styles';
-import { setOperationResult } from '../../../services/actions/objectActions';
+import { setGraphData, setOperationResult } from '../../../services/actions/objectActions';
 export default function SideBarOps({ userDependencies, tableDependencies, objectsList}) {
   
   const { selectedObject } = useSelector(state => state.selectedObject);
+  const { graphData } = useSelector(state => state.graphData);
   const dispatch = useDispatch();
 
   function handleDrop() {
@@ -34,6 +35,10 @@ export default function SideBarOps({ userDependencies, tableDependencies, object
     ));
   }
 
+  async function handleUndo() {
+    await dispatch(setGraphData({ operation: 'RESTORE', data: graphData }));
+  }
+
   return (
     (tableDependencies && userDependencies && objectsList) &&
     (tableDependencies.length > 0 && userDependencies.length > 0 && objectsList.length > 0) ?
@@ -52,7 +57,10 @@ export default function SideBarOps({ userDependencies, tableDependencies, object
             <label>Status</label> <label>{selectedObject.status}</label>
           </ObjectInfo>
           <h3>What if</h3>
-          <Button color="lightcoral" onClick={handleDrop}>DROP?</Button>
+            {!graphData || !graphData.nodes ? 
+              <Button color="lightcoral" onClick={handleDrop}>DROP?</Button> :
+              <Button color="lightblue" onClick={handleUndo}>UNDO DROP</Button> 
+            }
         </div>
         :
         <h5>(Please, click on a node)</h5>
