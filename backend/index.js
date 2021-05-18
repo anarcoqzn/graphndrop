@@ -7,7 +7,6 @@ const app = express();
 const router = require('./router');
 
 // oracledb.initOracleClient({ libDir: "C:\Oracle\instantclient_19_10" });
-// dbconfig.checkConnection() // - uncomment for initial testing connection
 
 app.use(express.json());
 app.use(cors());
