@@ -20,3 +20,6 @@ Para rodar a aplicação é necessário ter instalado e configurado em sua máqu
 #### No frontend
 - Pelo terminal, acesse o diretório do frontend e rode o comando ```npm install``` para baixar e instalar as dependências.
 - Em seguida execute o comando ```npm start``` para subir a aplicação. Acesse através de um navegador com o endereço localhost:3000
+
+Acesse o artigo completo com a descrição dessa ferramenta através do link abaixo
+[FERRAMENTA PARA VISUALIZAÇÃO DAS DEPÊNDENCIAS ENTRE OBJETOS EM UM BANCO DE DADOS E SIMULAÇÃO DE ALTERAÇÕES NOS OBJETOS](https://drive.google.com/file/d/1xfexpY0WfmKTXjOcZKv_Dy_g4fHMukMw/view?usp=sharing)
